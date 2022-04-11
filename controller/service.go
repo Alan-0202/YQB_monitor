@@ -58,6 +58,9 @@ func (service *ServiceController) ServiceList(c *gin.Context) {
 
 	outList := []dto.ServiceItemOutput{}
 	for _, listItem := range list {
+		if listItem.IsDelete == 1 {
+			continue
+		}
 		outItem := dto.ServiceItemOutput{
 			ID: listItem.ID,
 			LoadType: listItem.LoadType,
