@@ -20,6 +20,7 @@ type ServiceItemOutput struct {
 	LoadType    int       `json:"load_type" form:"load_type"`
 	ServiceName string    `json:"service_name" form:"service_name"`
 	ServiceDesc string    `json:"service_desc" form:"service_desc"`
+	IsDelete    int8      `json:"is_delete" form:"is_deleted"`
 }
 
 type ServiceListOutput struct {
@@ -27,3 +28,23 @@ type ServiceListOutput struct {
 	List  []ServiceItemOutput     `json:"list" form:"list" comment:"列表" validate:""`
 }
 
+
+//delete
+type ServiceDeleteInput struct {
+	ID int64 `json:"id" form:"id" comment:"服务ID" example:"56" validate:"required"` //服务ID
+}
+
+func(params *ServiceDeleteInput) BindValidParam(c *gin.Context) error{
+	return public.DefaultGetValidParams(c, params)
+}
+
+
+// Add http service
+type ServiceAddHttpInput struct {
+	ServiceName string `json:"service_name" form:"service_name" comment:"服务名" example:"" validate:"required"` //服务名
+	ServiceDesc string `json:"service_desc" form:"service_desc" comment:"服务描述" example:"" validate:"required,max=255,min=1"`     //服务描述
+}
+
+func(p *ServiceAddHttpInput) BindValidParam(c *gin.Context) error {
+	return public.DefaultGetValidParams(c, p)
+}

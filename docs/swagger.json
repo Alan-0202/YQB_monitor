@@ -170,6 +170,98 @@
                 }
             }
         },
+        "/service/service_add_http": {
+            "post": {
+                "description": "添加HTTP服务",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务管理"
+                ],
+                "summary": "添加HTTP服务",
+                "operationId": "/service/service_add_http",
+                "parameters": [
+                    {
+                        "description": "body",
+                        "name": "body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.ServiceAddHttpInput"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "success",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
+        "/service/service_delete": {
+            "get": {
+                "description": "服务删除",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "服务管理"
+                ],
+                "summary": "服务删除",
+                "operationId": "/service/service_delete",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "服务ID",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/middleware.Response"
+                                },
+                                {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            }
+        },
         "/service/service_list": {
             "get": {
                 "description": "服务列表",
@@ -298,9 +390,36 @@
                 }
             }
         },
+        "dto.ServiceAddHttpInput": {
+            "type": "object",
+            "required": [
+                "service_desc",
+                "service_name"
+            ],
+            "properties": {
+                "service_desc": {
+                    "description": "服务描述",
+                    "type": "string",
+                    "maxLength": 255,
+                    "minLength": 1,
+                    "example": ""
+                },
+                "service_name": {
+                    "description": "服务名",
+                    "type": "string",
+                    "example": ""
+                }
+            }
+        },
         "dto.ServiceItemOutput": {
             "type": "object",
             "properties": {
+                "id": {
+                    "type": "integer"
+                },
+                "is_delete": {
+                    "type": "integer"
+                },
                 "load_type": {
                     "type": "integer"
                 },
