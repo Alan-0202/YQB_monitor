@@ -19,6 +19,7 @@ func ServiceRegister(group *gin.RouterGroup) {
 	group.GET("service_list",service.ServiceList)
 	group.GET("service_delete",service.ServiceDelete)
 	group.POST("service_add_http", service.ServiceAddHttp)
+	group.GET("service_info", service.ServiceDetail)
 }
 
 
@@ -173,4 +174,37 @@ func(t *ServiceController) ServiceAddHttp(c *gin.Context) {
 	tx.Commit()
 
 	middleware.ResponseSuccess(c, "ok")
+}
+
+
+// ServiceDetail godoc
+// @Summary 服务详情
+// @Description 服务详情
+// @Tags 服务管理
+// @ID /service/service_detail
+// @Accept  json
+// @Produce  json
+// @Param id query string true "服务ID"
+// @Success 200 {object} middleware.Response{data=dao.ServiceInfo} "success"
+// @Router /service/service_info [get]
+func (t *ServiceController) ServiceDetail(c *gin.Context) {
+	params := &dto.ServiceDeleteInput{}
+	if err := params.BindValidParam(c); err != nil {
+		middleware.ResponseError(c, 2000, err)
+		return
+	}
+
+	tx, err := lib.GetGormPool("default")
+	if err != nil {
+		middleware.ResponseError(c, 2001, err)
+		return
+	}
+
+	serviceInfo := &dao.ServiceInfo{ID: params.ID}
+	serviceInfo, err = serviceInfo.Find(c, tx, serviceInfo)
+	if err != nil {
+		middleware.ResponseError(c, 2002, err)
+		return
+	}
+	middleware.ResponseSuccess(c, serviceInfo)
 }

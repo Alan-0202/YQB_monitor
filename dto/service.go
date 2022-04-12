@@ -48,3 +48,6 @@ type ServiceAddHttpInput struct {
 func(p *ServiceAddHttpInput) BindValidParam(c *gin.Context) error {
 	return public.DefaultGetValidParams(c, p)
 }
+
+
+
